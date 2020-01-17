@@ -9,14 +9,14 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
     static class Entry<E> extends SinglyLinkedList.Entry<E> {
 	Entry<E> prev;
 	Entry(E x, Entry<E> next, Entry<E> prev) {
-	    super(x, nxt);
+	    super(x, next);
 	    this.prev = prev;
 	}
     }
 
  */
 
-package idsa; 	// change to your netid
+package bsv180000; 	// change to your netid
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.NoSuchElementException;
