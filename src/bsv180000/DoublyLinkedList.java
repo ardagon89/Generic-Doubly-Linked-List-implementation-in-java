@@ -1,8 +1,6 @@
 package bsv180000;
-import java.util.Iterator;
 import java.util.Scanner;
-
-import bsv180000.SinglyLinkedList.Entry;
+import java.util.NoSuchElementException;
 
 /** 
  * @author		bsv180000
@@ -47,15 +45,10 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
     }
     
     public void add(DEntry<T> entry) {
-    	try {
-			this.tail.next = entry;
-			entry.prev = this.tail;
-			this.tail = this.tail.next;
-			this.size++;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.tail.next = entry;
+		entry.prev = this.tail;
+		this.tail = this.tail.next;
+		this.size++;
     }
     
     public DLLIterator iterator() { return new DLLIterator(); }
@@ -69,14 +62,26 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
     	}
     	
     	public boolean hasPrev() {
-    		return ((DEntry<T>)cursor).prev != null;
+    		return (cursor != head.next) && ((DEntry<T>)cursor).prev != null;
     	}
     	
     	public T prev() {
-    	    next = cursor;
-    	    cursor = ((DEntry<T>) cursor).prev;
-    	    ready = true;
-    	    return cursor.element;
+    		if (cursor == head.next) {
+    			throw new NoSuchElementException();
+    		}
+    		else {
+        	    next = cursor;
+        	    cursor = ((DEntry<T>) cursor).prev;
+        	    ready = true;
+        	    return cursor.element;    			
+    		}
+    	}
+    	
+    	public void add(T x) {
+    		cursor.next = new DEntry<T>(x, (DEntry<T>)cursor.next, (DEntry<T>)cursor);
+    		cursor = cursor.next;
+    		((DEntry<T>)cursor.next).prev = cursor;
+    		size++;
     	}
     }
 
@@ -120,6 +125,16 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 				else {
 					break whileloop;
 				}
+				break;
+			case 4:
+				System.out.println(it.next());
+				break;
+			case 5:
+				System.out.println(it.prev());
+				break;
+			case 6:
+				it.add(++n);
+				lst.printList();
 				break;
 			default: // Exit loop
 				break whileloop;
