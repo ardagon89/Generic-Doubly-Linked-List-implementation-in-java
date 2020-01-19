@@ -61,15 +61,20 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
     public DLLIterator iterator() { return new DLLIterator(); }
 
     protected class DLLIterator extends SLLIterator {
-    	DEntry<T> cursor, prev, next;
+    	Entry<T> next;
+    	
+    	public DLLIterator() {
+    		super();
+    		next = null;
+    	}
     	
     	public boolean hasPrev() {
-    		return cursor.prev != null;
+    		return ((DEntry<T>)cursor).prev != null;
     	}
     	
     	public T prev() {
     	    next = cursor;
-    	    cursor = (DEntry<T>) cursor.prev;
+    	    cursor = ((DEntry<T>) cursor).prev;
     	    ready = true;
     	    return cursor.element;
     	}
