@@ -15,12 +15,14 @@ import java.util.Scanner;
 public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 
     /** Class Entry holds a single node of the list */
-    static class Entry<E> extends SinglyLinkedList.Entry<E>{
-        Entry<E> prev;
+    static class DEntry<E> extends SinglyLinkedList.Entry<E>{
+    	DEntry<E> prev;
+    	DEntry<E> next;
 
-        Entry(E x, Entry<E> next, Entry<E> prev) {
+        DEntry(E x, DEntry<E> next, DEntry<E> prev) {
             super(x, next);
             this.prev = prev;
+            this.next = next;
         }
     }
 
@@ -29,11 +31,21 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
     int size;
 
     public DoublyLinkedList(){
-        head = new Entry<>(null ,null,null);
+        head = new DEntry<>(null ,null,null);
         tail = head;
         size = 0;
     }
-
+    
+    public void add(T x) {
+    	add(new DEntry<>(x, null, null));
+    }
+    
+    public void add(DEntry<T> entry) {
+    	this.tail.next = entry;
+    	entry.prev = (DEntry<T>) this.tail;
+    	tail = tail.next;
+    	this.size++;
+    }
 
     /**
      * Main function to test my class
