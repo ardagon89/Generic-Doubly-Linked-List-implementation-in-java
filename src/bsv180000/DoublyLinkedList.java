@@ -2,6 +2,8 @@ package bsv180000;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import bsv180000.SinglyLinkedList.Entry;
+
 /** 
  * @author		bsv180000
  * @author 		sxa190016
@@ -16,35 +18,61 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 
     /** Class Entry holds a single node of the list */
     static class DEntry<E> extends SinglyLinkedList.Entry<E>{
-    	DEntry<E> prev;
-    	DEntry<E> next;
+    	Entry<E> prev;
+		/* DEntry<E> next; */
 
         DEntry(E x, DEntry<E> next, DEntry<E> prev) {
             super(x, next);
             this.prev = prev;
-            this.next = next;
         }
+        
+//        public String toString() {
+//        	return this.element.toString();
+//        }
     }
 
     // Dummy header is used.  tail stores reference of tail element of list
-    Entry<T> head, tail;
-    int size;
+//    DEntry<T> head, tail;
+//    int size;
 
-    public DoublyLinkedList(){
-        head = new DEntry<>(null ,null,null);
-        tail = head;
-        size = 0;
-    }
+//    public DoublyLinkedList(){
+//    	super();
+////        head = new DEntry<>(null ,null,null);
+////        tail = head;
+////        size = 0;
+//    }
     
     public void add(T x) {
     	add(new DEntry<>(x, null, null));
     }
     
     public void add(DEntry<T> entry) {
-    	this.tail.next = entry;
-    	entry.prev = (DEntry<T>) this.tail;
-    	tail = tail.next;
-    	this.size++;
+    	try {
+			this.tail.next = entry;
+			entry.prev = this.tail;
+			this.tail = this.tail.next;
+			this.size++;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public DLLIterator iterator() { return new DLLIterator(); }
+
+    protected class DLLIterator extends SLLIterator {
+    	DEntry<T> cursor, prev, next;
+    	
+    	public boolean hasPrev() {
+    		return cursor.prev != null;
+    	}
+    	
+    	public T prev() {
+    	    next = cursor;
+    	    cursor = (DEntry<T>) cursor.prev;
+    	    ready = true;
+    	    return cursor.element;
+    	}
     }
 
     /**
@@ -57,13 +85,14 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 			n = Integer.parseInt(args[0]);
 		}
 
-		SinglyLinkedList<Integer> lst = new SinglyLinkedList<>();
+		DoublyLinkedList<Integer> lst = new DoublyLinkedList<>();
+
 		for (int i = 1; i <= n; i++) {
 			lst.add(Integer.valueOf(i));
 		}
 		lst.printList();
 
-		Iterator<Integer> it = lst.iterator();
+		DoublyLinkedList<Integer>.DLLIterator it = lst.iterator();
 		Scanner in = new Scanner(System.in);
 		whileloop: while (in.hasNext()) {
 			int com = in.nextInt();
@@ -78,6 +107,14 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 			case 2: // Remove element
 				it.remove();
 				lst.printList();
+				break;
+			case 3://
+				if (it.hasPrev()) {
+					System.out.println(it.prev());
+				}
+				else {
+					break whileloop;
+				}
 				break;
 			default: // Exit loop
 				break whileloop;
