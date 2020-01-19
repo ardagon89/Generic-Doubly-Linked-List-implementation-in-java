@@ -3,8 +3,8 @@ import java.util.Scanner;
 import java.util.NoSuchElementException;
 
 /** 
- * @author		bsv180000
- * @author 		sxa190016
+ * @author		sxa190016
+ * @author 		bsv180000
  * @version		1.0		
  * Doubly linked list: Short project 1
  * Entry class has generic type associated with it, to allow inheritance.
@@ -144,6 +144,5 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 		lst.unzip();
 		lst.printList();
 	}
-
 }
 
