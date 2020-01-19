@@ -1,11 +1,17 @@
-/** @author bsv180000, shariq ali
- *  Doubly linked list: Short project 1
- *
- */
-
 package bsv180000;
+import java.util.Iterator;
 import java.util.Scanner;
 
+/** 
+ * @author		bsv180000
+ * @author 		sxa190016
+ * @version		1.0		
+ * Doubly linked list: Short project 1
+ * Entry class has generic type associated with it, to allow inheritance.
+ * The DoublyLinkedList class extends the functionality of SinglyLinkedList class
+ * and implements methods hasPrev(), prev(), add(x)
+ * and DLLIterator which extends SinglyLinkedList.SLLIterator class.
+ */
 public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 
     /** Class Entry holds a single node of the list */
@@ -33,21 +39,42 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
      * Main function to test my class
      * @param args
      */
-    public static void main(String[] args) {
-        // Simple Input Scanner
-        Scanner in;
+	public static void main(String[] args) {
+		int n = 10;
+		if (args.length > 0) {
+			n = Integer.parseInt(args[0]);
+		}
 
-        if(args.length > 0)
-        {
-            // read from the specified file
-            in = new Scanner(args[1]);
-        }
-        else
-        {
-            // read from terminal
-            in = new Scanner(System.in);
-        }
-    }
+		SinglyLinkedList<Integer> lst = new SinglyLinkedList<>();
+		for (int i = 1; i <= n; i++) {
+			lst.add(Integer.valueOf(i));
+		}
+		lst.printList();
+
+		Iterator<Integer> it = lst.iterator();
+		Scanner in = new Scanner(System.in);
+		whileloop: while (in.hasNext()) {
+			int com = in.nextInt();
+			switch (com) {
+			case 1: // Move to next element and print it
+				if (it.hasNext()) {
+					System.out.println(it.next());
+				} else {
+					break whileloop;
+				}
+				break;
+			case 2: // Remove element
+				it.remove();
+				lst.printList();
+				break;
+			default: // Exit loop
+				break whileloop;
+			}
+		}
+		lst.printList();
+		lst.unzip();
+		lst.printList();
+	}
 
 }
 
