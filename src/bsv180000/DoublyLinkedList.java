@@ -83,6 +83,11 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
     		((DEntry<T>)cursor.next).prev = cursor;
     		size++;
     	}
+    	
+    	public void remove() {
+    		super.remove();
+    		((DEntry<T>)cursor.next).prev = cursor;
+    	}
     }
 
     /**
