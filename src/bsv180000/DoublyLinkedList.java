@@ -55,10 +55,12 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 
     protected class DLLIterator extends SLLIterator {
     	Entry<T> next;
+    	boolean set;
     	
     	public DLLIterator() {
     		super();
     		next = null;
+    		set = false;
     	}
     	
     	public boolean hasPrev() {
