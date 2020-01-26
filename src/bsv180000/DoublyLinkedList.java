@@ -56,10 +56,8 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 	 * @param entry The object of entry class to be added to the end of the DLL
 	 */
 	public void add(Entry<T> entry) {
-		this.tail.next = entry;
 		entry.prev = this.tail;
-		this.tail = this.tail.next;
-		this.size++;
+		super.add(entry);
 	}
 
 	/**
