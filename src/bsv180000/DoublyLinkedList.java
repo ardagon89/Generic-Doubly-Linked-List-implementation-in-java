@@ -1,35 +1,35 @@
 package bsv180000;
+
 import java.util.Scanner;
 import java.util.NoSuchElementException;
 
-/** 
- * @author		sxa190016
- * @author 		bsv180000
- * @version		1.0		
- * Doubly linked list: Short project 1
- * Entry class has generic type associated with it, to allow inheritance.
- * The DoublyLinkedList class extends the functionality of SinglyLinkedList class
- * and implements methods hasPrev(), prev(), add(x)
- * and DLLIterator which extends SinglyLinkedList.SLLIterator class.
+/**
+ * @author sxa190016
+ * @author bsv180000
+ * @version 1.0 Doubly linked list: Short project 1 Entry class has generic type
+ *          associated with it, to allow inheritance. The DoublyLinkedList class
+ *          extends the functionality of SinglyLinkedList class and implements
+ *          methods hasPrev(), prev(), add(x) and DLLIterator which extends
+ *          SinglyLinkedList.SLLIterator class.
  */
 public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 
-    /** Class Entry holds a single node of the list */
-    static class DEntry<E> extends SinglyLinkedList.Entry<E>{
-    	Entry<E> prev;
+	/** Class Entry holds a single node of the list */
+	static class DEntry<E> extends SinglyLinkedList.Entry<E> {
+		Entry<E> prev;
 		/* DEntry<E> next; */
 
-        DEntry(E x, DEntry<E> next, DEntry<E> prev) {
-            super(x, next);
-            this.prev = prev;
-        }
-        
+		DEntry(E x, DEntry<E> next, DEntry<E> prev) {
+			super(x, next);
+			this.prev = prev;
+		}
+
 //        public String toString() {
 //        	return this.element.toString();
 //        }
-    }
+	}
 
-    // Dummy header is used.  tail stores reference of tail element of list
+	// Dummy header is used. tail stores reference of tail element of list
 //    DEntry<T> head, tail;
 //    int size;
 
@@ -39,63 +39,72 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 ////        tail = head;
 ////        size = 0;
 //    }
-    
-    public void add(T x) {
-    	add(new DEntry<>(x, null, null));
-    }
-    
-    public void add(DEntry<T> entry) {
+
+	public void add(T x) {
+		add(new DEntry<>(x, null, null));
+	}
+
+	public void add(DEntry<T> entry) {
 		this.tail.next = entry;
 		entry.prev = this.tail;
 		this.tail = this.tail.next;
 		this.size++;
-    }
-    
-    public DLLIterator iterator() { return new DLLIterator(); }
+	}
 
-    protected class DLLIterator extends SLLIterator {
-    	Entry<T> next;
-    	boolean set;
-    	
-    	public DLLIterator() {
-    		super();
-    		next = null;
-    		set = false;
-    	}
-    	
-    	public boolean hasPrev() {
-    		return (cursor != head.next) && ((DEntry<T>)cursor).prev != null;
-    	}
-    	
-    	public T prev() {
-    		if (cursor == head.next) {
-    			throw new NoSuchElementException();
-    		}
-    		else {
-        	    next = cursor;
-        	    cursor = ((DEntry<T>) cursor).prev;
-        	    ready = true;
-        	    return cursor.element;    			
-    		}
-    	}
-    	
-    	public void add(T x) {
-    		cursor.next = new DEntry<T>(x, (DEntry<T>)cursor.next, (DEntry<T>)cursor);
-    		cursor = cursor.next;
-    		((DEntry<T>)cursor.next).prev = cursor;
-    		size++;
-    	}
-    	
-    	public void remove() {
-    		super.remove();
-    		((DEntry<T>)cursor.next).prev = cursor;
-    	}
-    }
+	public DLLIterator iterator() {
+		return new DLLIterator();
+	}
 
-    /**
-     * Main function to test my class
-     * @param args
-     */
+	protected class DLLIterator extends SLLIterator {
+		Entry<T> next;
+		boolean set;
+
+		public DLLIterator() {
+			super();
+			next = null;
+			set = false;
+		}
+
+		public boolean hasPrev() {
+			  return (cursor != head) && (cursor != head.next) && ((DEntry<T>)cursor).prev != null;
+		}
+
+		public T prev() {
+			if (cursor == head || cursor == head.next) {
+				throw new NoSuchElementException();
+			} else {
+				next = cursor;
+				cursor = ((DEntry<T>) cursor).prev;
+				prev = ((DEntry<T>) cursor).prev;
+				set = true;
+				return cursor.element;
+			}
+		}
+
+		public void add(T x) {
+			if (!set) {
+				throw new NoSuchElementException();
+			}
+			cursor.next = new DEntry<T>(x, (DEntry<T>) cursor.next, (DEntry<T>) cursor);
+			cursor = cursor.next;
+			((DEntry<T>) cursor.next).prev = cursor;
+			set = false;
+			size++;
+		}
+
+		public void remove() {
+			super.remove();
+			if (cursor != tail) {
+				((DEntry<T>) cursor.next).prev = cursor;
+			}
+		}
+	}
+
+	/**
+	 * Main function to test my class
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		int n = 10;
 		if (args.length > 0) {
@@ -128,8 +137,7 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 			case 3://
 				if (it.hasPrev()) {
 					System.out.println(it.prev());
-				}
-				else {
+				} else {
 					break whileloop;
 				}
 				break;
@@ -152,4 +160,3 @@ public class DoublyLinkedList<T> extends SinglyLinkedList<T> {
 		lst.printList();
 	}
 }
-
